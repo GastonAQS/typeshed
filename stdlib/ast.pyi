@@ -1746,16 +1746,6 @@ _T = _TypeVar("_T", bound=AST)
 if sys.version_info >= (3, 13):
     @overload
     def parse(
-        source: _T,
-        filename: str | ReadableBuffer | os.PathLike[Any] = "<unknown>",
-        mode: Literal["exec", "eval", "func_type", "single"] = "exec",
-        *,
-        type_comments: bool = False,
-        feature_version: None | int | tuple[int, int] = None,
-        optimize: Literal[-1, 0, 1, 2] = -1,
-    ) -> _T: ...
-    @overload
-    def parse(
         source: str | ReadableBuffer,
         filename: str | ReadableBuffer | os.PathLike[Any] = "<unknown>",
         mode: Literal["exec"] = "exec",
@@ -1831,19 +1821,20 @@ if sys.version_info >= (3, 13):
         feature_version: None | int | tuple[int, int] = None,
         optimize: Literal[-1, 0, 1, 2] = -1,
     ) -> mod: ...
+    @overload
+    def parse(
+        source: _T,
+        filename: str | ReadableBuffer | os.PathLike[Any] = "<unknown>",
+        mode: Literal["exec", "eval", "func_type", "single"] = "exec",
+        *,
+        type_comments: bool = False,
+        feature_version: None | int | tuple[int, int] = None,
+        optimize: Literal[-1, 0, 1, 2] = -1,
+    ) -> _T: ...
 
 else:
     @overload
     def parse(
-        source: _T,
-        filename: str | ReadableBuffer | os.PathLike[Any] = "<unknown>",
-        mode: Literal["exec", "eval", "func_type", "single"] = "exec",
-        *,
-        type_comments: bool = False,
-        feature_version: None | int | tuple[int, int] = None,
-    ) -> _T: ...
-    @overload
-    def parse(
         source: str | ReadableBuffer,
         filename: str | ReadableBuffer | os.PathLike[Any] = "<unknown>",
         mode: Literal["exec"] = "exec",
@@ -1911,6 +1902,15 @@ else:
         type_comments: bool = False,
         feature_version: None | int | tuple[int, int] = None,
     ) -> mod: ...
+    @overload
+    def parse(
+        source: _T,
+        filename: str | ReadableBuffer | os.PathLike[Any] = "<unknown>",
+        mode: str = "exec",
+        *,
+        type_comments: bool = False,
+        feature_version: None | int | tuple[int, int] = None,
+    ) -> _T: ...
 
 def literal_eval(node_or_string: str | AST) -> Any: ...
 
